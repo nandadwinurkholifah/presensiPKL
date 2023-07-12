@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "796876989411",
+    "project_id": "presensipkl-f72fa",
+    "storage_bucket": "presensipkl-f72fa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796876989411:android:2a44dc8e0aaf3f5ec376d6",
+        "android_client_info": {
+          "package_name": "com.example.presensi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "796876989411-99omqogokt2vpb147aaec3ffa9sbl2b1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQTVX7fNztaZmDMnB00ecPQ1IocODhBBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796876989411-99omqogokt2vpb147aaec3ffa9sbl2b1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
