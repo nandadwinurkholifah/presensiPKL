@@ -72,211 +72,81 @@ class HomeView extends GetView<HomeController> {
         },
       ),
 
-      // body: SingleChildScrollView(
-      //   child: Container(
-      //     padding:  const EdgeInsets.all(tDefaultSize),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children:  [
-      //           SizedBox(
-      //             width: double.infinity,
-      //             child: ElevatedButton(
-      //               onPressed: () async {
-      //                 // wajahController.ambilgambar();
-      //                 // final photo = wajahController.photo.value;
-      //                 // if (photo != null) {
-      //                 //   Get.toNamed(Routes.PENGENAL_WAJAH, arguments: photo);
-      //                 // }
-      //               },
-      //               child: const Text("AMBIL GAMBAR"),
-      //             ),
-      //           ),
-      //           const SizedBox(height: 10),
-      //           // SizedBox(
-      //           //   width: double.infinity,
-      //           //   child: ElevatedButton(
-      //           //     onPressed: ()  {
-      //           //        final photo = wajahController.photo.value;
-      //           //         if (photo != null) {
-      //           //           Get.toNamed(Routes.PENGENAL_WAJAH, arguments: photo);
-      //           //         }
-      //           //     },
-      //           //     child: const Text("WAJAH"),
-      //           //   ),
-      //           // ),
-      //         ]
-      //       )
-      //   ),
-      // )
-
       body: GridView.count(
-      padding: const EdgeInsets.all(tDefaultSize), 
+      padding: const EdgeInsets.all(tDefaultSize),
       crossAxisCount: 2,
-      children: <Widget>[
-        // StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        // stream: controller.streamrole(),
-        // builder: (context, snapshot) {
-        //   if (snapshot.connectionState == ConnectionState.waiting) {
-        //     return const SizedBox();
-        //   }
+        children: <Widget>[
+          ..._buildCard(Routes.ADD_MAHASISWA, Icons.person_add, 'Tambah Mahasiswa', ['admin']),
+          ..._buildCard(Routes.ADD_PEMBIMBING, Icons.people, 'Tambah Pembimbing', ['admin']),
+          // ..._buildCard(Routes.PRESENSI_GURU, 'assets/icons/task_deadline.svg', 'Presensi Guru', ['Guru Piket', 'Admin']),
+          // ..._buildCard(Routes.ADD_GURU, Icons.person_add_alt_1_rounded, 'Tambah Pegawai', ['Admin']),
+          // ..._buildCard(Routes.REKAP_GURU, 'assets/icons/task_deadline.svg', 'Rekap Absensi Guru', ['Admin']),
+          // ..._buildCard(Routes.ADD_MATA_PELAJARAN, Icons.menu_book_outlined, 'Tambah Mata Pelajaran',
+          //     ['Guru', 'Admin']),
+        ],
+      ),
+    );
+  }
 
-        //   String? role = snapshot.data?.data()?["role"];
-        //   if (role == "admin") {
-        //     return
+  List<Widget> _buildCard(String route, dynamic icon, String text, List<String> allowedRoles) {
+    return [
+      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: controller.streamrole(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const SizedBox();
+          }
 
-              Card(
+          String role = snapshot.data!.data()!["role"];
+          if (allowedRoles.contains(role)) {
+            return Card(
               margin: const EdgeInsets.all(8),
               shape: RoundedRectangleBorder(
                 side: const BorderSide(
                   color: tPrimaryColor,
                 ),
                 borderRadius: BorderRadius.circular(20.0),
-                ),
-                  child: InkWell(
-                    onTap: () => Get.offAllNamed(Routes.ADD_MAHASISWA),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const <Widget>[
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: InkWell(
+                  onTap: () => Get.toNamed(route),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        if (icon is IconData)
                           Icon(
-                            Icons.person_add,
+                            icon,
                             color: tPrimaryColor,
                             size: 65,
+                          )
+                        else if (icon is String)
+                          SvgPicture.asset(
+                            icon,
+                            width: 65,
+                            height: 65,
+                            color: tPrimaryColor,
                           ),
-                          SizedBox(height: 5),
-                          Padding(
-                            padding: EdgeInsets.all(5.0), // Tambahkan padding di sini
-                            child: Text(
-                              "Tambah Mahasiswa",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                color: tPrimaryColor,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                        Text(
+                          text,
+                          style: const TextStyle(
+                            fontSize: 15.0,
+                            color: tPrimaryColor,
                           ),
-                        ],
-                      ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-
-
-                  Card(
-                    margin: const EdgeInsets.all(8),
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        color: tPrimaryColor,
-                      ),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    child: InkWell(
-                      onTap: () 
-                      => Get.offAllNamed(Routes.ADD_PEMBIMBING),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center, 
-                          children: const <Widget>[
-                            Icon(
-                              Icons.person,
-                              color: tPrimaryColor,
-                              size: 65,
-                            ),
-                            SizedBox(height: 5), 
-                            Padding(
-                            padding: EdgeInsets.all(5.0), // Tambahkan padding di sini
-                            child: Text(
-                              "Tambah Pembimbing",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                color: tPrimaryColor,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                // } else if(role == "mahasiswa") {
-                //   return
-                //   Card(
-                //     margin: const EdgeInsets.all(8),
-                //     shape: RoundedRectangleBorder(
-                //       side: const BorderSide(
-                //         color: tPrimaryColor,
-                //       ),
-                //       borderRadius: BorderRadius.circular(20.0),
-                //     ),
-                //     child: InkWell(
-                //       onTap: () {},
-                //       // => Get.toNamed(Routes.ADD_MATA_PELAJARAN),
-                //       child: Center(
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center, // Menambahkan alignment
-                //           children: const <Widget>[
-                //             Icon(
-                //               Icons.menu_book_outlined,
-                //               color: tPrimaryColor,
-                //               size: 65,
-                //             ),
-                //             SizedBox(height: 10), // Menambahkan jarak antara ikon dan teks
-                //             Text(
-                //               "Mahasiswa",
-                //               style: TextStyle(
-                //                 fontSize: 15.0,
-                //                 color: tPrimaryColor,
-                //               ),
-                //               textAlign: TextAlign.center, // Teks menjadi berada di tengah
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   ); 
-                // } else {
-                //   return
-                //   Card(
-                //     margin: const EdgeInsets.all(8),
-                //     shape: RoundedRectangleBorder(
-                //       side: const BorderSide(
-                //         color: tPrimaryColor,
-                //       ),
-                //       borderRadius: BorderRadius.circular(20.0),
-                //     ),
-                //     child: InkWell(
-                //       onTap: () {},
-                //       // => Get.toNamed(Routes.ADD_MATA_PELAJARAN),
-                //       child: Center(
-                //         child: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center, // Menambahkan alignment
-                //           children: const <Widget>[
-                //             Icon(
-                //               Icons.menu_book_outlined,
-                //               color: tPrimaryColor,
-                //               size: 65,
-                //             ),
-                //             SizedBox(height: 10), // Menambahkan jarak antara ikon dan teks
-                //             Text(
-                //               "Pembimbing",
-                //               style: TextStyle(
-                //                 fontSize: 15.0,
-                //                 color: tPrimaryColor,
-                //               ),
-                //               textAlign: TextAlign.center, // Teks menjadi berada di tengah
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   );
-            //     }
-            //   },
-            // ),
-        ],
+              ),
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
       ),
-    );
+    ];
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:presensi/app/constants/sizes.dart';
@@ -24,13 +25,13 @@ class PengenalWajahView extends GetView<PengenalWajahController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("ABSENSI"),
-                ),
-              ),
+              // SizedBox(
+              //   width: double.infinity,
+              //   child: ElevatedButton(
+              //     onPressed: () {},
+              //     child: const Text("ABSENSI"),
+              //   ),
+              // ),
               SizedBox(
                 width: double.infinity,
                 child: Column(
@@ -50,6 +51,67 @@ class PengenalWajahView extends GetView<PengenalWajahController> {
                   ],
                 ),
               ),
+
+              const SizedBox(height: tFormHeight + 10),
+
+              TextFormField(
+                autocorrect: false,
+                controller: controller.kegiatanc,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.person_outline_outlined),
+                  labelText: "Kegiatan PKL",
+                  hintText: "Kegiatan PKL",
+                  border: OutlineInputBorder()
+                ),
+              ),
+
+                              const SizedBox(height: tFormHeight - 5),
+
+                SizedBox(
+                  width: double.infinity,
+                  child:
+
+                   ElevatedButton(
+                    onPressed: () async{
+                        // await controller.tambahmapel(position);
+                        // print("${position.latitude}, ${position.longitude}");
+                      Map<String, dynamic> dataResponse = await controller.determinePosition();
+                      if (dataResponse["error"] != true) {
+                        Position position= dataResponse["position"];
+
+                        // Menghitung jarak antara dua lokasi
+                        double distance = Geolocator.distanceBetween(
+                          position.latitude,
+                          position.longitude,
+                          endLatitude,
+                          endLongitude,
+                        );
+                          //bisa kalau 200000
+                          // bisa kalau 100000
+                          // bisa 10000 
+                          // 100 = 1 meter
+                        if (distance <= 100) {
+                          
+                        await controller.createabsen(position, mataPelajaran, uid);
+                        // print("${position.latitude}, ${position.longitude}");
+
+                        Get.snackbar("${dataResponse['message']}", "");
+                        }else{
+                          Get.snackbar("Gagal Melakukan Absensi", "Anda Berada Diluar Area");
+                        }
+
+                      }else{
+                        Get.snackbar("Ada Kesalahan", dataResponse["message"]);
+                      }
+                    },
+                    child: const Text("PRESENSI",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    ),
+                  ),
+
             ],
           ),
         ),
