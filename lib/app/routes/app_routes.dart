@@ -11,8 +11,7 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const ADD_MAHASISWA = _Paths.ADD_MAHASISWA;
   static const ADD_PEMBIMBING = _Paths.ADD_PEMBIMBING;
-  static const HOME_MHS = _Paths.HOME_MHS;
-  static const HOME_PMB = _Paths.HOME_PMB;
+
 }
 
 abstract class _Paths {
@@ -25,6 +24,5 @@ abstract class _Paths {
   static const PROFILE = '/profile';
   static const ADD_MAHASISWA = '/add-mahasiswa';
   static const ADD_PEMBIMBING = '/add-pembimbing';
-  static const HOME_MHS = '/home-mhs';
-  static const HOME_PMB = '/home-pmb';
+
 }

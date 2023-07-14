@@ -77,14 +77,22 @@
 
 //image classification
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:presensi/app/routes/app_pages.dart';
 import 'package:tflite/tflite.dart';
 import 'package:intl/intl.dart';
+
+
+
 
 class PengenalWajahController extends GetxController {
   final ImagePicker picker = ImagePicker();
@@ -93,6 +101,11 @@ class PengenalWajahController extends GetxController {
   RxString confidencePercent = RxString('');
   RxDouble confidenceValue = RxDouble(0.0);
   bool isModelLoaded = false;
+
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  RxBool isLoading = false.obs;
 
   PengenalWajahController() {
     loadMyModel();
@@ -148,11 +161,106 @@ class PengenalWajahController extends GetxController {
 
   TextEditingController kegiatanc = TextEditingController();
 
-  Future<void> createpresensi()async {
+  Future<void> createpresensi(Position position) async {
+    isLoading.value = true;
+
+    String uid = auth.currentUser!.uid;
+
+    CollectionReference<Map<String, dynamic>> colPres =
+        firestore.collection("users").doc(uid).collection("presensi");
+
+    QuerySnapshot<Map<String, dynamic>> snapPres = await colPres.get();
+
     DateTime now = DateTime.now();
     String tglabsen = DateFormat.yMd().format(now).replaceAll("/", "-");
+
+    if (snapPres.docs.length == 0) {
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+          await firestore.collection("users").doc(uid).get();
+
+      double userLatitude = userSnapshot.data()?["alamat_pkl"]?["lat"];
+      double userLongitude = userSnapshot.data()?["alamat_pkl"]?["long"];
+
+      if (userLatitude != null && userLongitude != null) {
+        double distance = Geolocator.distanceBetween(
+          position.latitude,
+          position.longitude,
+          userLatitude,
+          userLongitude,
+        );
+          // xollovoling distance 1000, lokasi mushollah
+          // 100 = 1 meter
+        if (distance <= 1000) { 
+          await colPres.doc(tglabsen).set({
+            // "date": now.toIso8601String(),
+            "tgl_presensi": now.toIso8601String(),
+            "lokasi": {
+              "lat": position.latitude,
+              "long": position.longitude,
+            },
+            "foto": await _uploadImage(File(photo.value!.path)), // Mengubah XFile menjadi File
+            "kegiatan": kegiatanc.text,
+          });
+          Get.snackbar("Presensi Berhasil", "");
+          Get.offAllNamed(Routes.HOME);
+        } else {
+          Get.snackbar("Gagal Melakukan Absensi", "Anda Berada Diluar Area");
+        }
+      } else {
+        Get.snackbar("Gagal Melakukan Absensi", "Lokasi pengguna tidak tersedia");
+      }
+    } else {
+      Get.back();
+      Get.snackbar("Sudah Melakukan Presensi", "Anda Tidak Perlu Melakukan Presensi");
+    }
+    isLoading.value = false;
   }
+
+  Future<File?> compressImage(File file) async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final tempFilePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+      final result = await FlutterImageCompress.compressAndGetFile(
+        file.absolute.path,
+        tempFilePath,
+        quality: 70, // Ubah nilai quality sesuai kebutuhan Anda
+      );
+
+      return result;
+    } catch (e) {
+      print('Error compressing image: $e');
+      return null;
+    }
+  }
+
+  Future<String> _uploadImage(File file) async {
+  try {
+    String uid = auth.currentUser!.uid;
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('users')
+        .child(uid)
+        .child('presensi')
+        .child('$fileName.jpg');
+
+    UploadTask uploadTask = ref.putFile(file);
+
+    TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
+
+    String imageUrl = await snapshot.ref.getDownloadURL();
+
+    return imageUrl;
+    } catch (e) {
+      print('Error uploading image: $e');
+      return '';
+    }
+}
     
+
+  
 
   Future<Map<String, dynamic>> determinePosition() async {
   bool serviceEnabled;
