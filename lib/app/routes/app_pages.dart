@@ -6,12 +6,16 @@ import '../modules/add_pembimbing/bindings/add_pembimbing_binding.dart';
 import '../modules/add_pembimbing/views/add_pembimbing_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/laporan/bindings/laporan_binding.dart';
+import '../modules/laporan/views/laporan_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/password_baru/bindings/password_baru_binding.dart';
 import '../modules/password_baru/views/password_baru_view.dart';
 import '../modules/pengenal_wajah/bindings/pengenal_wajah_binding.dart';
 import '../modules/pengenal_wajah/views/pengenal_wajah_view.dart';
+import '../modules/pmb_pres_mhs/bindings/pmb_pres_mhs_binding.dart';
+import '../modules/pmb_pres_mhs/views/pmb_pres_mhs_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/welcome/bindings/welcome_binding.dart';
@@ -64,6 +68,16 @@ class AppPages {
       name: _Paths.ADD_PEMBIMBING,
       page: () => const AddPembimbingView(),
       binding: AddPembimbingBinding(),
+    ),
+    GetPage(
+      name: _Paths.LAPORAN,
+      page: () =>  LaporanView(),
+      binding: LaporanBinding(),
+    ),
+    GetPage(
+      name: _Paths.PMB_PRES_MHS,
+      page: () => const PmbPresMhsView(),
+      binding: PmbPresMhsBinding(),
     ),
   ];
 }

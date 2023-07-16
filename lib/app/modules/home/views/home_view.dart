@@ -78,11 +78,10 @@ class HomeView extends GetView<HomeController> {
         children: <Widget>[
           ..._buildCard(Routes.ADD_MAHASISWA, Icons.person_add, 'Tambah Mahasiswa', ['admin']),
           ..._buildCard(Routes.ADD_PEMBIMBING, Icons.people, 'Tambah Pembimbing', ['admin']),
-          // ..._buildCard(Routes.PRESENSI_GURU, 'assets/icons/task_deadline.svg', 'Presensi Guru', ['Guru Piket', 'Admin']),
+          ..._buildCard(Routes.LAPORAN, Icons.menu_book_outlined, 'Laporan Presensi', ['mahasiswa','admin']),
+          ..._buildCard(Routes.PMB_PRES_MHS, 'assets/icons/task_deadline.svg', 'Presensi Mahasiswa', ['pembimbing']),
           // ..._buildCard(Routes.ADD_GURU, Icons.person_add_alt_1_rounded, 'Tambah Pegawai', ['Admin']),
           // ..._buildCard(Routes.REKAP_GURU, 'assets/icons/task_deadline.svg', 'Rekap Absensi Guru', ['Admin']),
-          // ..._buildCard(Routes.ADD_MATA_PELAJARAN, Icons.menu_book_outlined, 'Tambah Mata Pelajaran',
-          //     ['Guru', 'Admin']),
         ],
       ),
     );
@@ -93,12 +92,12 @@ class HomeView extends GetView<HomeController> {
       StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: controller.streamrole(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
             return const SizedBox();
           }
 
-          String role = snapshot.data!.data()!["role"];
-          if (allowedRoles.contains(role)) {
+          String? role = snapshot.data?.data()?["role"];
+          if (role != null && allowedRoles.contains(role)) {
             return Card(
               margin: const EdgeInsets.all(8),
               shape: RoundedRectangleBorder(

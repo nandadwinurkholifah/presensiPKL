@@ -8,6 +8,7 @@ import 'package:presensi/app/constants/colors.dart';
 import 'package:presensi/app/constants/sizes.dart';
 import 'package:presensi/app/constants/text_strings.dart';
 import 'package:presensi/app/modules/pengenal_wajah/controllers/pengenal_wajah_controller.dart';
+import 'package:presensi/app/routes/app_pages.dart';
 
 import '../../home/controllers/home_controller.dart';
 
@@ -54,7 +55,7 @@ class PengenalWajahView extends GetView<PengenalWajahController> {
                     const SizedBox(height: tFormHeight),
                     // Text("Nama: ${controller.nama.value}"),
                     Text(
-                      "Nama Lengkap: ${controller.nama.value != 'Tidak terdeteksi' ? controller.nama.value : 'Belum terdeteksi'}",
+                      "Nama Lengkap: ${controller.nama.value}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -91,34 +92,55 @@ class PengenalWajahView extends GetView<PengenalWajahController> {
                 SizedBox(
                   width: double.infinity,
                   child:
+                  
+                   Visibility(
 
-                   ElevatedButton(
-                    onPressed: () async{
-                      Map<String, dynamic> dataResponse = await controller.determinePosition();
-                      if (dataResponse["error"] != true) {
-                        Position position= dataResponse["position"];
-
-                          
-                        await controller.createpresensi(position);
+                     child: ElevatedButton(
+                      onPressed: () async{
+                        Map<String, dynamic> dataResponse = await controller.determinePosition();
+                        if (dataResponse["error"] != true) {
+                          Position position= dataResponse["position"];
 
 
-                        // Get.snackbar("${dataResponse['message']}", "");
+                        // bool isNamaLengkapMatched = controller.nama.value == controller.getNamaLengkapUser();
+                        // print("Nama Lengkap: ${controller.getNamaLengkapUser()}");
+                        // print("Controller Nama: ${controller.nama.value}");
+                        // print("Is Nama Lengkap Matched: $isNamaLengkapMatched");
+                        String namaLengkapUser = await controller.getNamaLengkapUser();
+                        print("Nama Lengkap: $namaLengkapUser");
+                        print("Controller Nama: ${controller.nama.value}");
 
-                      }else{
-                        Get.snackbar("Ada Kesalahan", dataResponse["message"]);
+                        bool isNamaLengkapMatched = controller.nama.value.trim() == namaLengkapUser.trim();
+                        print("Is Nama Lengkap Matched: $isNamaLengkapMatched");
+                        if (isNamaLengkapMatched) {
+                          print(isNamaLengkapMatched);
+                          await controller.createpresensi(position);
+                          // Get.snackbar("Presensi Berhasil", "");
+                          Get.offAllNamed(Routes.HOME);
+                      } else {
+                        // print("gagal");
+                        Get.offAllNamed(Routes.HOME);
+                        Get.snackbar("Nama Tidak Cocok", "Nama tidak sesuai dengan nama lengkap pengguna");
                       }
-                    },
-                    child: Obx(() {
-                      if (controller.isLoading.value) {
-                        return CircularProgressIndicator();
-                      } else{
-                          return const Text("PRESENSI",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold),
-                          );
+
+                          // Get.snackbar("${dataResponse['message']}", "");
+
+                        }else{
+                          Get.snackbar("Ada Kesalahan", dataResponse["message"]);
                         }
-                    }),
+                      },
+                      child: Obx(() {
+                        if (controller.isLoading.value) {
+                          return CircularProgressIndicator();
+                        } else{
+                            return const Text("PRESENSI",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold),
+                            );
+                          }
+                      }),
                   ),
+                   ),
                 ),
             ],
           ),

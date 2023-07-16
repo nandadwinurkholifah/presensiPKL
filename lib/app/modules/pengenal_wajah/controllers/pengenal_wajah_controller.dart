@@ -101,7 +101,7 @@ class PengenalWajahController extends GetxController {
   RxString confidencePercent = RxString('');
   RxDouble confidenceValue = RxDouble(0.0);
   bool isModelLoaded = false;
-
+  String get namaLengkapUser => FirebaseAuth.instance.currentUser?.displayName ?? '';
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -161,60 +161,141 @@ class PengenalWajahController extends GetxController {
 
   TextEditingController kegiatanc = TextEditingController();
 
+  // Future<void> createpresensi(Position position) async {
+  //   isLoading.value = true;
+
+  //   String uid = auth.currentUser!.uid;
+
+  //   CollectionReference<Map<String, dynamic>> colPres =
+  //       firestore.collection("users").doc(uid).collection("presensi");
+
+  //   QuerySnapshot<Map<String, dynamic>> snapPres = await colPres.get();
+
+  //   DateTime now = DateTime.now();
+  //   String tglabsen = DateFormat.yMd().format(now).replaceAll("/", "-");
+
+  //   if (snapPres.docs.length == 0) {
+  //     DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+  //         await firestore.collection("users").doc(uid).get();
+
+  //     double userLatitude = userSnapshot.data()?["alamat_pkl"]?["lat"];
+  //     double userLongitude = userSnapshot.data()?["alamat_pkl"]?["long"];
+
+  //     if (userLatitude != null && userLongitude != null) {
+  //       double distance = Geolocator.distanceBetween(
+  //         position.latitude,
+  //         position.longitude,
+  //         userLatitude,
+  //         userLongitude,
+  //       );
+  //         // xollovoling distance 1000, lokasi mushollah
+  //         // 100 = 1 meter
+  //       if (distance <= 1000) { 
+  //         await colPres.doc(tglabsen).set({
+  //           // "date": now.toIso8601String(),
+  //           "tgl_presensi": now.toIso8601String(),
+  //           "lokasi": {
+  //             "lat": position.latitude,
+  //             "long": position.longitude,
+  //           },
+  //           "foto": await _uploadImage(File(photo.value!.path)), // Mengubah XFile menjadi File
+  //           "kegiatan": kegiatanc.text,
+  //         });
+  //         Get.snackbar("Presensi Berhasil", "");
+  //         Get.offAllNamed(Routes.HOME);
+  //       } else {
+  //         Get.snackbar("Gagal Melakukan Absensi", "Anda Berada Diluar Area");
+  //       }
+  //     } else {
+  //       Get.snackbar("Gagal Melakukan Absensi", "Lokasi pengguna tidak tersedia");
+  //     }
+  //   } else {
+  //     Get.back();
+  //     Get.snackbar("Sudah Melakukan Presensi", "Anda Tidak Perlu Melakukan Presensi");
+  //   }
+  //   isLoading.value = false;
+  // }
+
+ Future<String> getNamaLengkapUser() async {
+  String? uid = FirebaseAuth.instance.currentUser?.uid;
+  DocumentSnapshot<Map<String, dynamic>> userSnapshot = await FirebaseFirestore.instance.collection("users").doc(uid).get();
+  return userSnapshot.data()?["nama_lengkap"] ?? '';
+}
+
+
   Future<void> createpresensi(Position position) async {
-    isLoading.value = true;
+  isLoading.value = true;
 
-    String uid = auth.currentUser!.uid;
+  String uid = auth.currentUser!.uid;
 
-    CollectionReference<Map<String, dynamic>> colPres =
-        firestore.collection("users").doc(uid).collection("presensi");
+  CollectionReference<Map<String, dynamic>> colPres =
+      firestore.collection("users").doc(uid).collection("presensi");
 
-    QuerySnapshot<Map<String, dynamic>> snapPres = await colPres.get();
+  QuerySnapshot<Map<String, dynamic>> snapPres = await colPres.get();
 
-    DateTime now = DateTime.now();
-    String tglabsen = DateFormat.yMd().format(now).replaceAll("/", "-");
+  DateTime now = DateTime.now();
+  String tglabsen = DateFormat.yMd().format(now).replaceAll("/", "-");
 
-    if (snapPres.docs.length == 0) {
-      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
-          await firestore.collection("users").doc(uid).get();
+  if (snapPres.docs.length == 0) {
+    DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+        await firestore.collection("users").doc(uid).get();
 
-      double userLatitude = userSnapshot.data()?["alamat_pkl"]?["lat"];
-      double userLongitude = userSnapshot.data()?["alamat_pkl"]?["long"];
+    double userLatitude = userSnapshot.data()?["alamat_pkl"]?["lat"];
+    double userLongitude = userSnapshot.data()?["alamat_pkl"]?["long"];
 
-      if (userLatitude != null && userLongitude != null) {
-        double distance = Geolocator.distanceBetween(
-          position.latitude,
-          position.longitude,
-          userLatitude,
-          userLongitude,
-        );
-          // xollovoling distance 1000, lokasi mushollah
-          // 100 = 1 meter
-        if (distance <= 1000) { 
-          await colPres.doc(tglabsen).set({
-            // "date": now.toIso8601String(),
-            "tgl_presensi": now.toIso8601String(),
-            "lokasi": {
-              "lat": position.latitude,
-              "long": position.longitude,
-            },
-            "foto": await _uploadImage(File(photo.value!.path)), // Mengubah XFile menjadi File
-            "kegiatan": kegiatanc.text,
-          });
-          Get.snackbar("Presensi Berhasil", "");
-          Get.offAllNamed(Routes.HOME);
-        } else {
-          Get.snackbar("Gagal Melakukan Absensi", "Anda Berada Diluar Area");
-        }
+    if (userLatitude != null && userLongitude != null) {
+      double distance = Geolocator.distanceBetween(
+        position.latitude,
+        position.longitude,
+        userLatitude,
+        userLongitude,
+      );
+      // xollovoling distance 1000, lokasi mushollah
+      // 100 = 1 meter
+      if (distance <= 1000) {
+        await colPres.doc(tglabsen).set({
+          "tgl_presensi": now.toIso8601String(),
+          "lokasi": {
+            "lat": position.latitude,
+            "long": position.longitude,
+          },
+          "kegiatan": kegiatanc.text,
+          "foto": await _uploadImage(File(photo.value!.path)),
+        });
+        Get.snackbar("Presensi Berhasil", "");
+        Get.offAllNamed(Routes.HOME);
+      
       } else {
-        Get.snackbar("Gagal Melakukan Absensi", "Lokasi pengguna tidak tersedia");
+        Get.snackbar("Gagal Melakukan Absensi", "Anda Berada Diluar Area");
       }
     } else {
+      Get.snackbar("Gagal Melakukan Absensi", "Lokasi pengguna tidak tersedia");
+    }
+  } else {
+    
+    // hari selanjutnya 
+    DocumentSnapshot<Map<String, dynamic>> hari_ini = await colPres.doc(tglabsen).get();
+    // print(hari_ini.exists);
+    if (hari_ini.exists == true) {
       Get.back();
       Get.snackbar("Sudah Melakukan Presensi", "Anda Tidak Perlu Melakukan Presensi");
+    } else{
+        await colPres.doc(tglabsen).set({
+          "tgl_presensi": now.toIso8601String(),
+          "lokasi": {
+            "lat": position.latitude,
+            "long": position.longitude,
+          },
+          "kegiatan": kegiatanc.text,
+          "foto": await _uploadImage(File(photo.value!.path)),
+        });
+        Get.snackbar("Presensi Berhasil", "");
+        Get.offAllNamed(Routes.HOME);
     }
-    isLoading.value = false;
   }
+  isLoading.value = false;
+}
+
 
   Future<File?> compressImage(File file) async {
     try {
@@ -224,7 +305,7 @@ class PengenalWajahController extends GetxController {
       final result = await FlutterImageCompress.compressAndGetFile(
         file.absolute.path,
         tempFilePath,
-        quality: 70, // Ubah nilai quality sesuai kebutuhan Anda
+        quality: 20, // Ubah nilai quality sesuai kebutuhan Anda
       );
 
       return result;
