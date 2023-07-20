@@ -34,6 +34,7 @@ class AddPembimbingController extends GetxController {
           String uid = userCredential.user!.uid;
 
           await firestore.collection("users").doc(uid).set({
+            "nidn" : nidnc.text,
             "nama_lengkap" : namapc.text,
             "email" : emailpc.text,
             "uid" : uid,
@@ -43,16 +44,16 @@ class AddPembimbingController extends GetxController {
 
           await userCredential.user!.sendEmailVerification();
 
-          CollectionReference<Map<String, dynamic>> mhsCollection =
-          firestore.collection("pembimbing");
+          // CollectionReference<Map<String, dynamic>> mhsCollection =
+          // firestore.collection("pembimbing");
 
-          await firestore.collection("pembimbing").doc(uid).set({
-            "nim" : nidnc.text,
-            "nama_lengkap" : namapc.text,
-            "email" : emailpc.text,
-            "uid" : uid,
-            "create_at" : DateTime.now().toIso8601String(),
-          });
+          // await firestore.collection("pembimbing").doc(uid).set({
+          //   "nim" : nidnc.text,
+          //   "nama_lengkap" : namapc.text,
+          //   "email" : emailpc.text,
+          //   "uid" : uid,
+          //   "create_at" : DateTime.now().toIso8601String(),
+          // });
 
           await auth.signOut();
 

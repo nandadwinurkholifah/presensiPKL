@@ -26,7 +26,7 @@ class LoginController extends GetxController {
           
           if (userCredential.user!.emailVerified == true) {
             isLoading.value = false;
-            if (passc.text == "passwordagur123") {
+            if (passc.text == "presensipkl123") {
               Get.offAllNamed(Routes.PASSWORD_BARU);
             } else{
               Get.offAllNamed(Routes.HOME);

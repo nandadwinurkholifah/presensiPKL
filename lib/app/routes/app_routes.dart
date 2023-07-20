@@ -13,6 +13,10 @@ abstract class Routes {
   static const ADD_PEMBIMBING = _Paths.ADD_PEMBIMBING;
   static const LAPORAN = _Paths.LAPORAN;
   static const PMB_PRES_MHS = _Paths.PMB_PRES_MHS;
+  static const DETAIL_PRESENSI = _Paths.DETAIL_PRESENSI;
+  static const UPDATE_PASSWORD = _Paths.UPDATE_PASSWORD;
+  static const LUPA_PASSWORD = _Paths.LUPA_PASSWORD;
+  static const UPDATE_PROFILE = _Paths.UPDATE_PROFILE;
 }
 
 abstract class _Paths {
@@ -27,4 +31,8 @@ abstract class _Paths {
   static const ADD_PEMBIMBING = '/add-pembimbing';
   static const LAPORAN = '/laporan';
   static const PMB_PRES_MHS = '/pmb-pres-mhs';
+  static const DETAIL_PRESENSI = '/detail-presensi';
+  static const UPDATE_PASSWORD = '/update-password';
+  static const LUPA_PASSWORD = '/lupa-password';
+  static const UPDATE_PROFILE = '/update-profile';
 }

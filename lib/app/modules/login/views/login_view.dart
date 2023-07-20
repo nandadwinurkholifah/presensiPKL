@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:presensi/app/constants/colors.dart';
 import 'package:presensi/app/constants/sizes.dart';
 import 'package:presensi/app/constants/text_strings.dart';
+import 'package:presensi/app/routes/app_pages.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -98,8 +99,8 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: tFormHeight - 10),
 
               TextButton(
-                onPressed: () {},
-                // => Get.toNamed(Routes.LUPA_PASSWORD), 
+                onPressed: ()
+                => Get.toNamed(Routes.LUPA_PASSWORD), 
                 child: const Text("Lupa Password ?"),)
 
             ],
