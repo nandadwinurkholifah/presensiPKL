@@ -80,6 +80,7 @@ class HomeView extends GetView<HomeController> {
           ..._buildCard(Routes.ADD_PEMBIMBING, Icons.person_add, 'Tambah Pembimbing', ['admin']),
           ..._buildCard(Routes.LAPORAN, Icons.menu_book_outlined, 'Laporan Presensi', ['mahasiswa','admin']),
           ..._buildCard(Routes.PMB_PRES_MHS, 'assets/icons/task_deadline.svg', 'Presensi Mahasiswa', ['pembimbing','admin']),
+          // ..._buildCard(Routes.GEO_PAGE, Icons.maps_home_work, 'Presensi Mahasiswa', ['pembimbing','admin','mahasiswa']),
           // ..._buildCard(Routes.ADD_GURU, Icons.person_add_alt_1_rounded, 'Tambah Pegawai', ['Admin']),
           // ..._buildCard(Routes.REKAP_GURU, 'assets/icons/task_deadline.svg', 'Rekap Absensi Guru', ['Admin']),
         ],

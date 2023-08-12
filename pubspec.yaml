@@ -2,49 +2,49 @@ name: presensi
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
+environment:
   sdk: '>=2.18.6 <3.0.0'
 
-dependencies: 
+dependencies:
   cloud_firestore: ^4.7.1
   convex_bottom_bar: 3.1.0
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.2.5
   firebase_core: ^2.4.1
   firebase_storage: ^11.2.1
+  flutter:
+    sdk: flutter
   flutter_image_compress: 1.0.0
   flutter_svg_icons: ^0.0.1+3
   geocoding: 2.0.5
   geolocator: ^9.0.2
   get: 4.6.5
   google_fonts: ^4.0.4
+  google_maps_flutter: 2.1.3
   image_picker: 0.8.5
   intl: ^0.18.1
+  open_file: 3.3.2
   path_provider: ^2.0.10
   pdf: 3.7.4
   tflite: ^1.1.1
-  open_file: 3.3.2
-  flutter: 
-    sdk: flutter
 
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: ^2.0.0
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
-  assets: 
+flutter:
+  assets:
     - assets/images/
     - assets/icons/
     - assets/labels.txt
     - assets/model_unquant.tflite
-  fonts: 
+  fonts:
     - family: poppins
-      fonts: 
+      fonts:
         - asset: assets/fonts/Poppins/Poppins-Regular.ttf
         - asset: assets/fonts/Poppins/Poppins-Medium.ttf
         - asset: assets/fonts/Poppins/Poppins-Bold.ttf
         - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
         - asset: assets/fonts/Poppins/Poppins-ExtraBold.ttf
   uses-material-design: true
-

@@ -88,7 +88,22 @@ class LaporanView extends GetView<LaporanController> {
                                 child: Text("${data['kegiatan']}"),
                             ),
                           ],
-                        )
+                        ),
+                        // Row(
+                        //   children: [
+                        //     Container(
+                        //       width: 150,
+                        //       height: 50,
+                        //         child: Text("Lokasi PKL"),
+                        //     ),
+                        //   ],
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Text("${data['lokasi']}"),
+                        //     Text("${data['long']}"),
+                        //   ],
+                        // ),
                       ],
                     ),
                   );

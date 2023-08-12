@@ -100,30 +100,26 @@ class PengenalWajahView extends GetView<PengenalWajahController> {
                         Map<String, dynamic> dataResponse = await controller.determinePosition();
                         if (dataResponse["error"] != true) {
                           Position position= dataResponse["position"];
+                          
+                          
+                            String namaLengkapUser = await controller.getNamaLengkapUser();
+                            print("Nama Lengkap: $namaLengkapUser");
+                            print("Controller Nama: ${controller.nama.value}");
 
+                            bool isNamaLengkapMatched = controller.nama.value.trim() == namaLengkapUser.trim();
+                            print("Is Nama Lengkap Matched: $isNamaLengkapMatched");
+                            if (isNamaLengkapMatched) {
+                              print(isNamaLengkapMatched);
+                              await controller.createpresensi(position);
+                              Get.snackbar("${dataResponse['message']}", "${position.latitude}, ${position.longitude}",backgroundColor: Colors.white);
+                              Get.offAllNamed(Routes.HOME);
+                            } else {
+                              // print("gagal");
+                              Get.offAllNamed(Routes.HOME);
+                              Get.snackbar("Nama Tidak Cocok", "Nama tidak sesuai dengan nama lengkap pengguna");
+                            }
 
-                        // bool isNamaLengkapMatched = controller.nama.value == controller.getNamaLengkapUser();
-                        // print("Nama Lengkap: ${controller.getNamaLengkapUser()}");
-                        // print("Controller Nama: ${controller.nama.value}");
-                        // print("Is Nama Lengkap Matched: $isNamaLengkapMatched");
-                        String namaLengkapUser = await controller.getNamaLengkapUser();
-                        print("Nama Lengkap: $namaLengkapUser");
-                        print("Controller Nama: ${controller.nama.value}");
-
-                        bool isNamaLengkapMatched = controller.nama.value.trim() == namaLengkapUser.trim();
-                        print("Is Nama Lengkap Matched: $isNamaLengkapMatched");
-                        if (isNamaLengkapMatched) {
-                          print(isNamaLengkapMatched);
-                          await controller.createpresensi(position);
-                          // Get.snackbar("Presensi Berhasil", "");
-                          Get.offAllNamed(Routes.HOME);
-                      } else {
-                        // print("gagal");
-                        Get.offAllNamed(Routes.HOME);
-                        Get.snackbar("Nama Tidak Cocok", "Nama tidak sesuai dengan nama lengkap pengguna");
-                      }
-
-                          // Get.snackbar("${dataResponse['message']}", "");
+                          
 
                         }else{
                           Get.snackbar("Ada Kesalahan", dataResponse["message"]);
