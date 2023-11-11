@@ -111,7 +111,6 @@ class PengenalWajahView extends GetView<PengenalWajahController> {
                             if (isNamaLengkapMatched) {
                               print(isNamaLengkapMatched);
                               await controller.createpresensi(position);
-                              Get.snackbar("${dataResponse['message']}", "${position.latitude}, ${position.longitude}",backgroundColor: Colors.white);
                               Get.offAllNamed(Routes.HOME);
                             } else {
                               // print("gagal");

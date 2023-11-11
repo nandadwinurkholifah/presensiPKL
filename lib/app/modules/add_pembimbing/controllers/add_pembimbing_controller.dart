@@ -64,7 +64,7 @@ class AddPembimbingController extends GetxController {
 
           Get.back(); //tutup dialog
           Get.back(); //kembali ke beranda
-          Get.snackbar("Berhasil", "Berhasil Menambah Guru, Silahkan Verifikasi Email");
+          Get.snackbar("Berhasil", "Berhasil Menambah Pengguna Pemnbimbing, Silahkan Verifikasi Email");
         }
           // print(userCredential);
           isLoadingAddmhs.value = false;
@@ -139,7 +139,7 @@ class AddPembimbingController extends GetxController {
                   style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.all(10), // Tambahkan padding di setiap sisi tombol
                   ), 
-                  child: Text(isLoadingAddmhs.isFalse ? "TAMBAH MAHASISWA" : "LOADING..."),
+                  child: Text(isLoadingAddmhs.isFalse ? "TAMBAH PEMBIMBING" : "LOADING..."),
                 ),      
               ),
             ],

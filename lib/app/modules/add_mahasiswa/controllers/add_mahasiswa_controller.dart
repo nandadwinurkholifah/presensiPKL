@@ -85,7 +85,7 @@ class AddMahasiswaController extends GetxController {
 
           Get.back(); //tutup dialog
           Get.back(); //kembali ke beranda
-          Get.snackbar("Berhasil", "Berhasil Menambah Guru, Silahkan Verifikasi Email");
+          Get.snackbar("Berhasil", "Berhasil Menambah Pengguna Mahasiswa, Silahkan Verifikasi Email");
         }
           // print(userCredential);
           isLoadingAddmhs.value = false;

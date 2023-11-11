@@ -63,9 +63,6 @@ class LaporanController extends GetxController {
     final fontData = await rootBundle.load('assets/fonts/Poppins/Poppins-Regular.ttf');
     final customFont = pw.Font.ttf(fontData);
 
-    // Memuat gambar dari direktori assets
-    final Uint8List imageData = (await rootBundle.load('assets/images/cop_pkl.PNG')).buffer.asUint8List();
-
     // Membuat halaman PDF
     List<List<String>> tableData = await generateTableData();
 
@@ -74,16 +71,11 @@ class LaporanController extends GetxController {
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
           return [
-            pw.Header(
+             pw.Header(
               level: 0,
               child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.center,
+                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
-                   pw.Container(
-                    alignment: pw.Alignment.center,
-                    child: pw.Image(pw.MemoryImage(imageData), width: 200, height: 200), // Gambar di tengah
-                  ),
-                  pw.SizedBox(height: 10),
                   pw.Text(
                     "NIM: ${userData['nim']}",
                     style: pw.TextStyle(

@@ -81,7 +81,7 @@ class AddPembimbingView extends GetView<AddPembimbingController> {
                         await controller.Addpmb();
                       }
                     },
-                    child: Text(controller.isLoading.isFalse? "Tambah Mahasiswa".toUpperCase() : "LOADING...",
+                    child: Text(controller.isLoading.isFalse? "Tambah Pembimbing".toUpperCase() : "LOADING...",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold
                       ),

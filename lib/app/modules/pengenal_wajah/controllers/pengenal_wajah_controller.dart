@@ -252,7 +252,7 @@ class PengenalWajahController extends GetxController {
       );
       // xollovoling distance 1000, lokasi mushollah
       // 100 = 1 meter
-      if (distance <= 1000) {
+      if (distance <= 20000) {
         await colPres.doc(tglabsen).set({
           "tgl_presensi": now.toIso8601String(),
           "lokasi": {
@@ -262,6 +262,7 @@ class PengenalWajahController extends GetxController {
           "kegiatan": kegiatanc.text,
           "foto": await _uploadImage(File(photo.value!.path)),
         });
+        Get.snackbar("Berhasil mendapatkan posisi", "${position.latitude}, ${position.longitude}",backgroundColor: Colors.white);
         Get.snackbar("Presensi Berhasil", "");
         Get.offAllNamed(Routes.HOME);
       

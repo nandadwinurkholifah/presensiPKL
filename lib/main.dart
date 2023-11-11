@@ -6,14 +6,19 @@ import 'package:get/get.dart';
 import 'package:presensi/app/constants/text_strings.dart';
 import 'package:presensi/app/theme/theme.dart';
 import 'package:presensi/firebase_options.dart';
+import 'app/services/firebase_service.dart';
 
 import 'app/routes/app_pages.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
+  // Inisialisasi FirebaseService dan panggil initializeFirestore
+  final FirebaseService firebaseService = FirebaseService();
+  await firebaseService.initializeFirestore();
 
   runApp(
     StreamBuilder<User?>(
